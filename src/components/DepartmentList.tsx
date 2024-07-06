@@ -78,14 +78,11 @@ export default function DepartmentList() {
     <div>
       {optionsList.map(dept => (
         <Box key={dept.department}>
-          <Box display="flex" alignItems="center">
-            <IconButton onClick={handleExpand(dept.department)} size="small">
-              {expanded[dept.department] ? (
-                <ExpandLessIcon />
-              ) : (
-                <ExpandMoreIcon />
-              )}
-            </IconButton>
+          <Box
+            display="flex"
+            justifyContent="space-between"
+            alignItems="center"
+          >
             <FormControlLabel
               label={
                 dept.department.replace('_', ' ')[0].toUpperCase() +
@@ -99,6 +96,13 @@ export default function DepartmentList() {
                 />
               }
             />
+            <IconButton onClick={handleExpand(dept.department)} size="small">
+              {expanded[dept.department] ? (
+                <ExpandLessIcon />
+              ) : (
+                <ExpandMoreIcon />
+              )}
+            </IconButton>
           </Box>
           <Collapse in={expanded[dept.department]} timeout="auto" unmountOnExit>
             <Box sx={{ display: 'flex', flexDirection: 'column', ml: 3 }}>
