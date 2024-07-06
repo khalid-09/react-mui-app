@@ -27,7 +27,7 @@ const Posts = () => {
     const fetchData = async () => {
       try {
         setLoading(true);
-        const res = await fetch('https://jsonplaceholder..com/posts');
+        const res = await fetch('https://jsonplaceholder.typicode.com/posts');
 
         if (!res.ok) {
           throw new Error('Failed to fetch data');

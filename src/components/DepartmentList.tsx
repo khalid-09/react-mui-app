@@ -6,7 +6,17 @@ import IconButton from '@mui/material/IconButton';
 import Collapse from '@mui/material/Collapse';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ExpandLessIcon from '@mui/icons-material/ExpandLess';
-import optionsList from '../constants/options-list';
+
+const optionsList = [
+  {
+    department: 'customer_service',
+    sub_departments: ['support', 'customer_success'],
+  },
+  {
+    department: 'design',
+    sub_departments: ['graphic_design', 'product_design', 'web_design'],
+  },
+];
 
 export default function DepartmentList() {
   const [checked, setChecked] = useState<{ [key: string]: boolean }>(
@@ -26,38 +36,39 @@ export default function DepartmentList() {
     }, {} as { [key: string]: boolean })
   );
 
-  const handleParentChange =
-    (department: string) => (event: React.ChangeEvent<HTMLInputElement>) => {
-      const newChecked = { ...checked };
+  const handleParentChange = (
+    event: React.ChangeEvent<HTMLInputElement>,
+    department: string
+  ) => {
+    const newChecked = { ...checked };
+    newChecked[department] = event.target.checked;
 
-      newChecked[department] = event.target.checked;
+    optionsList
+      .find(dept => dept.department === department)
+      ?.sub_departments.forEach(subDept => {
+        newChecked[`${department}_${subDept}`] = event.target.checked;
+      });
 
-      optionsList
-        .find(dept => dept.department === department)
-        ?.sub_departments.forEach(subDept => {
-          newChecked[`${department}_${subDept}`] = event.target.checked;
-        });
+    setChecked(newChecked);
+  };
 
-      setChecked(newChecked);
-    };
+  const handleChildChange = (
+    event: React.ChangeEvent<HTMLInputElement>,
+    department: string,
+    subDepartment: string
+  ) => {
+    const newChecked = { ...checked };
+    newChecked[`${department}_${subDepartment}`] = event.target.checked;
 
-  const handleChildChange =
-    (department: string, subDepartment: string) =>
-    (event: React.ChangeEvent<HTMLInputElement>) => {
-      const newChecked = { ...checked };
+    const allSubDepsChecked = optionsList
+      .find(dept => dept.department === department)
+      ?.sub_departments.every(
+        subDept => newChecked[`${department}_${subDept}`]
+      );
 
-      newChecked[`${department}_${subDepartment}`] = event.target.checked;
-
-      const allSubDepsChecked = optionsList
-        .find(dept => dept.department === department)
-        ?.sub_departments.every(
-          subDept => newChecked[`${department}_${subDept}`]
-        );
-
-      newChecked[department] = !!allSubDepsChecked;
-
-      setChecked(newChecked);
-    };
+    newChecked[department] = !!allSubDepsChecked;
+    setChecked(newChecked);
+  };
 
   const isIndeterminate = (department: string): boolean => {
     const subDeps = optionsList.find(
@@ -92,7 +103,7 @@ export default function DepartmentList() {
                 <Checkbox
                   checked={checked[dept.department]}
                   indeterminate={isIndeterminate(dept.department)}
-                  onChange={handleParentChange(dept.department)}
+                  onChange={event => handleParentChange(event, dept.department)}
                 />
               }
             />
@@ -116,7 +127,9 @@ export default function DepartmentList() {
                   control={
                     <Checkbox
                       checked={checked[`${dept.department}_${subDept}`]}
-                      onChange={handleChildChange(dept.department, subDept)}
+                      onChange={event =>
+                        handleChildChange(event, dept.department, subDept)
+                      }
                     />
                   }
                 />
