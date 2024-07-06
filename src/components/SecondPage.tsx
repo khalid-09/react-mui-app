@@ -2,6 +2,7 @@ import { Box, Typography } from '@mui/material';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import { useEffect, useState } from 'react';
 import { Navigate } from 'react-router-dom';
+import DepartmentList from './DepartmentList';
 
 interface Post {
   userId: number;
@@ -42,23 +43,28 @@ const SecondPage = () => {
   }
 
   return (
-    <Box sx={{ maxWidth: 1200, mx: 'auto', mt: 5 }}>
-      <Typography
-        sx={{ fontWeight: 700 }}
-        variant="h5"
-        component="h1"
-        gutterBottom
-      >
-        Posts
-      </Typography>
-      {loading ? (
-        <Typography>Loading...</Typography>
-      ) : (
-        <div style={{ height: 600, width: '100%' }}>
-          <DataGrid rows={posts} columns={columns} autoPageSize />
-        </div>
-      )}
-    </Box>
+    <>
+      <Box sx={{ maxWidth: 1200, mx: 'auto', my: 5 }}>
+        <Typography
+          sx={{ fontWeight: 700 }}
+          variant="h5"
+          component="h1"
+          gutterBottom
+        >
+          Posts
+        </Typography>
+        {loading ? (
+          <Typography>Loading...</Typography>
+        ) : (
+          <div style={{ height: 600, width: '100%' }}>
+            <DataGrid rows={posts} columns={columns} autoPageSize />
+          </div>
+        )}
+      </Box>
+      <Box sx={{ maxWidth: 600, mx: 'auto', my: 5 }}>
+        <DepartmentList />
+      </Box>
+    </>
   );
 };
 

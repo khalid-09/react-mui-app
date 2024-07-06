@@ -2,6 +2,7 @@ import { useForm } from 'react-hook-form';
 import { loginSchema, LoginSchema } from '../validation/login';
 import { zodResolver } from '@hookform/resolvers/zod';
 import {
+  Alert,
   Box,
   Button,
   InputAdornment,
@@ -53,7 +54,7 @@ const LoginForm = () => {
       <Typography variant="h5" component="h1">
         User Information
       </Typography>
-      {state?.message && <Typography color="error">{state.message}</Typography>}
+      {state?.message && <Alert severity="warning">{state.message}</Alert>}
       <TextField
         label="Name"
         variant="outlined"
